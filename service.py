@@ -99,7 +99,7 @@ def Main():
 	for x in sett:
 		exec 'wwidgl%s = xbmcgui.ControlLabel(xax, yax+%i, 350, 50, "Scanning...")' % (count,count*25)
 		exec 'window.addControl(wwidgl%s)' % count
-		exec 'wwidgl%s.setVisibleCondition(!System.ScreenSaverActive)' % count
+		exec 'wwidgl%s.setVisibleCondition("!System.ScreenSaverActive")' % count
 		count += 1
 
 	while not xbmc.abortRequested:
@@ -108,11 +108,13 @@ def Main():
 		for x in sett:
 			exec 'wwidgl%s.setLabel("%s" + str(%s))' % (count,x[0],x[1])
 			count += 1
+
 	count = 0 
 	for x in sett:
 		exec 'window.removeControl(wwidgl%s)' % count
 		count += 1
 
 if __name__ == "__main__":
+	xbmc.sleep(15000)
 	Main()
 
