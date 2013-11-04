@@ -35,43 +35,80 @@ freq = int(__setting__('freq'))
 xax = int(__setting__('xax'))
 yax = int(__setting__('yax'))
 
+qual = __setting__('qual')
+rssi = __setting__('rssi')
+noise = __setting__('noise')
+cputemp = __setting__('cputemp')
+gputemp = __setting__('gputemp')
+
+sett = []
+if qual == 'true':
+	sett.append('qual')
+
+
 def log(vname, message):
 	#if settings['debug']:
 	xbmc.log(msg=vname + " -- " + str(message))
 
+def funcCpuTemp():
+	ga = os.popen('cat /sys/class/thermal/thermal_zone0/temp').read()
+	return str(float(ga.strip())/10000) + '°C'
+
+
+def funcGpuTemp():
+	ga = os.popen('/opt/vc/bin/vcgencmd measure_temp').read()
+	ga.replace('temp=','').replace("'C",'')
+	return ga.strip() + '°C'	
+
 
 def funcWifiLinkQ():
-        # "** Start Function - Wireless Link Quality **"
-        ga = os.popen('cat /proc/net/wireless | awk \'/0/ {print $3}\' | awk -F. \'/./ {print $1" %"}\'').read()
-        return ga.strip()
+    # "** Start Function - Wireless Link Quality **"
+    ga = os.popen('cat /proc/net/wireless | awk \'/0/ {print $3}\' | awk -F. \'/./ {print $1" %"}\'').read()
+    return ga.strip()
 
 def funcWifiRSSI():
-        # "** Start Function - Wireless RSSI **"
-        ga = os.popen('cat /proc/net/wireless | awk \'/0/ {print $4" dBm"}\'').read()
-        return ga.strip()
+    # "** Start Function - Wireless RSSI **"
+    ga = os.popen('cat /proc/net/wireless | awk \'/0/ {print $4" dBm"}\'').read()
+    return ga.strip()
 
 def funcWifiNoise():
-        # "** Start Function - Wireless Noise **"
-        ga = os.popen('cat /proc/net/wireless | awk \'/0/ {print $5}\' | awk -F. \'/./ {print $1" dBm"}\'').read()
-        return ga.strip()
+    # "** Start Function - Wireless Noise **"
+    ga = os.popen('cat /proc/net/wireless | awk \'/0/ {print $5}\' | awk -F. \'/./ {print $1" dBm"}\'').read()
+    return ga.strip()
 
 
 def Main():
 	window = xbmcgui.Window(10000)
-	wwidgl1 = xbmcgui.ControlLabel(xax, yax, 350, 50, 'Scanning')
-	wwidgl2 = xbmcgui.ControlLabel(xax, yax+25, 350, 50, 'Scanning')
-	wwidgl3 = xbmcgui.ControlLabel(xax, yax+50, 350, 50, 'Scanning')
-	window.addControl(wwidgl1)
-	window.addControl(wwidgl2)
-	window.addControl(wwidgl3)
+	count = 0
+	for key in sett.keys():
+		exec 'wwidgl%s = xbmcgui.ControlLabel(xax, yax+%i, 350, 50, "Scanning")' % (count,count*25)
+		exec 'window.addControl(wwidgl%s)' % count
+		count += 1
 
 	while not xbmc.abortRequested:
 		xbmc.sleep(1000*freq)
-		wwidgl1.setLabel('Quality: ' + str(funcWifiLinkQ()))
-		wwidgl2.setLabel('RSSI: ' + str(funcWifiRSSI()))
-		wwidgl3.setLabel('Noise: ' + str(funcWifiNoise()))
+		count = 0
+		for key in sett.keys():
+			exec 'wwidgl%s.setLabel("%s" + str(%s))' % (count,sett[key][0],sett[key][1])
+			count += 1
+	count = 0 
+	for key in sett.keys():
+		exec 'window.removeControls([wwidgl%s])' % count
+		count += 1
 
-	window.removeControls([wwidgl1,wwidgl2,wwidgl3])
+sett = {}
+
+if qual == 'true':
+	sett['qual'] = ('Wireless Quality: ','funcWifiLinkQ()')
+if rssi == 'true':
+	sett['rssi'] = ('Wireless RSSI: ','funcWifiRSSI()')
+if noise == 'true':
+	sett['noise'] = ('Wireless Noise: ','funcWifiNoise()')
+if cputemp == 'true':
+	sett['cputemp'] = ('CPU Temp: ','funcCpuTemp()')
+if gputemp == 'true':
+	sett['gputemp'] = ('GPU Temp: ','funcGpuTemp()')
+
 
 if __name__ == "__main__":
 	Main()

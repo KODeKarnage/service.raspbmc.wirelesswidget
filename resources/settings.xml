@@ -4,5 +4,10 @@
         <setting label="Update frequency" type="slider" id="freq" subsetting="true" default="5" range="1,1,30" option="int" />
         <setting label="Position X-axis" type="slider" id="xax" subsetting="true" default="10" range="1,1,930" option="int" />
         <setting label="Position Y-axis" type="slider" id="yax" subsetting="true" default="55" range="1,1,570" option="int" />
+        <setting id="qual" type="bool" label="Wireless Quality" default="true"/>
+        <setting id="rssi" type="bool" label="Wireless RSSI" default="true"/>
+        <setting id="noise" type="bool" label="Wireless Noise" default="true"/>
+        <setting id="cputemp" type="bool" label="CPU Temp" default="true"/>
+        <setting id="gputemp" type="bool" label="GPU Temp" default="true"/>
     </category>
 </settings>
