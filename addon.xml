@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="service.raspbmc.wirelesswidget"
        name="Raspbmc Wireless Widget"
-       version="0.1.8"
+       version="0.9.0"
        provider-name="KodeKarnage">
     <requires>
         <import addon="xbmc.python" version="2.1.0"/>
@@ -12,7 +12,7 @@
         <language>en</language>
         <platform>all</platform>
         <summary>service.raspbmc.wirelesswidget</summary>
-        <description>service.raspbmc.wirelesswidget</description>
+        <description>A widget for the home screen that displays wireless stats and cpu and gpu temps. Note: the widget goes to sleep when the screensaver is active. Also, the widget has a delayed start for 15 seconds to accommodate other services on the Pi.</description>
         <license>GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007</license>
     </extension>
 </addon>

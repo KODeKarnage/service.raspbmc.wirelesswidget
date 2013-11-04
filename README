@@ -1,1 +1,2 @@
-Raspbmc Update Notification
+Raspbmc Wireless Widget
+A widget for the home screen that displays wireless stats and cpu and gpu temps. Note: the widget goes to sleep when the screensaver is active. Also, the widget has a delayed start for 15 seconds to accommodate other services on the Pi.
