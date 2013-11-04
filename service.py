@@ -52,13 +52,13 @@ def log(vname, message):
 
 def funcCpuTemp():
 	ga = os.popen('cat /sys/class/thermal/thermal_zone0/temp').read()
-	return str(float(ga.strip())/10000) + '°C'
+	return str(float(ga.strip())/1000) + '°C'
 
 
 def funcGpuTemp():
 	ga = os.popen('/opt/vc/bin/vcgencmd measure_temp').read()
-	ga.replace('temp=','').replace("'C",'')
-	return ga.strip() + '°C'	
+	go = str(ga).replace('temp=','').replace("'C",'')
+	return go.strip() + '°C'	
 
 
 def funcWifiLinkQ():
@@ -80,7 +80,7 @@ def funcWifiNoise():
 def Main():
 	window = xbmcgui.Window(10000)
 	count = 0
-	for key in sett.keys():
+	for x in sett:
 		exec 'wwidgl%s = xbmcgui.ControlLabel(xax, yax+%i, 350, 50, "Scanning")' % (count,count*25)
 		exec 'window.addControl(wwidgl%s)' % count
 		count += 1
@@ -88,26 +88,26 @@ def Main():
 	while not xbmc.abortRequested:
 		xbmc.sleep(1000*freq)
 		count = 0
-		for key in sett.keys():
-			exec 'wwidgl%s.setLabel("%s" + str(%s))' % (count,sett[key][0],sett[key][1])
+		for x in sett:
+			exec 'wwidgl%s.setLabel("%s" + str(%s))' % (count,x[0],x[1])
 			count += 1
 	count = 0 
-	for key in sett.keys():
+	for x in sett():
 		exec 'window.removeControls([wwidgl%s])' % count
 		count += 1
 
-sett = {}
+sett = []
 
 if qual == 'true':
-	sett['qual'] = ('Wireless Quality: ','funcWifiLinkQ()')
+	sett.append(('Wireless Quality: ','funcWifiLinkQ()'))
 if rssi == 'true':
-	sett['rssi'] = ('Wireless RSSI: ','funcWifiRSSI()')
+	sett.append(('Wireless RSSI: ','funcWifiRSSI()'))
 if noise == 'true':
-	sett['noise'] = ('Wireless Noise: ','funcWifiNoise()')
+	sett.append(('Wireless Noise: ','funcWifiNoise()'))
 if cputemp == 'true':
-	sett['cputemp'] = ('CPU Temp: ','funcCpuTemp()')
+	sett.append(('CPU Temp: ','funcCpuTemp()'))
 if gputemp == 'true':
-	sett['gputemp'] = ('GPU Temp: ','funcGpuTemp()')
+	sett.append(('GPU Temp: ','funcGpuTemp()'))
 
 
 if __name__ == "__main__":
