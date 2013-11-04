@@ -104,10 +104,12 @@ def Main():
 
 	while not xbmc.abortRequested:
 		xbmc.sleep(1000*freq)
-		count = 0
-		for x in sett:
-			exec 'wwidgl%s.setLabel("%s" + str(%s))' % (count,x[0],x[1])
-			count += 1
+		if not xbmc.getCondVisibility("System.ScreenSaverActive"):
+			count = 0
+			for x in sett:
+				exec 'wwidgl%s.setLabel("%s" + str(%s))' % (count,x[0],x[1])
+				count += 1
+
 
 	count = 0 
 	for x in sett:
