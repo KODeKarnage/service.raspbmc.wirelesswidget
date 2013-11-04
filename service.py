@@ -52,7 +52,8 @@ def log(vname, message):
 
 def funcCpuTemp():
 	ga = os.popen('cat /sys/class/thermal/thermal_zone0/temp').read()
-	return str((int(ga.strip())/100)/10) + '°C'
+	go = float(ga)/1000
+	return  '%.1f°C' % go
 
 
 def funcGpuTemp():
