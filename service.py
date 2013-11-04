@@ -26,24 +26,40 @@ import xbmcaddon
 import xbmc
 import os
 
-__script_id__ = "service.raspbmc.wirelesswidget"
-__addon__ = xbmcaddon.Addon(id=__script_id__)
+__script_id__  = "service.raspbmc.wirelesswidget"
+__addon__      = xbmcaddon.Addon(id=__script_id__)
 __scriptPath__ = __addon__.getAddonInfo('path')
-__setting__ = __addon__.getSetting
+__setting__    = __addon__.getSetting
 
 freq = int(__setting__('freq'))
-xax = int(__setting__('xax'))
-yax = int(__setting__('yax'))
+xax  = int(__setting__('xax'))
+yax  = int(__setting__('yax'))
 
-qual = __setting__('qual')
-rssi = __setting__('rssi')
-noise = __setting__('noise')
+qual    = __setting__('qual')
+rssi    = __setting__('rssi')
+noise   = __setting__('noise')
 cputemp = __setting__('cputemp')
 gputemp = __setting__('gputemp')
 
+setdict            = {}
+setdict['qual']    = ('Wireless Quality: ','funcWifiLinkQ()')
+setdict['rssi']    = ('Wireless RSSI: ','funcWifiRSSI()')
+setdict['noise']   = ('Wireless Noise: ','funcWifiNoise()')
+setdict['cputemp'] = ('CPU Temp: ','funcCpuTemp()')
+setdict['gputemp'] = ('GPU Temp: ','funcGpuTemp()')
+
 sett = []
+
 if qual == 'true':
-	sett.append('qual')
+	sett.append(setdict['qual'])
+if rssi == 'true':
+	sett.append(setdict['rssi'])
+if noise == 'true':
+	sett.append(setdict['noise'])
+if cputemp == 'true':
+	sett.append(setdict['cputemp'])
+if gputemp == 'true':
+	sett.append(setdict['gputemp'])
 
 
 def log(vname, message):
@@ -54,7 +70,6 @@ def funcCpuTemp():
 	ga = os.popen('cat /sys/class/thermal/thermal_zone0/temp').read()
 	go = float(ga)/1000
 	return  '%.1f°C' % go
-
 
 def funcGpuTemp():
 	ga = os.popen('/opt/vc/bin/vcgencmd measure_temp').read()
@@ -94,22 +109,8 @@ def Main():
 			count += 1
 	count = 0 
 	for x in sett:
-		exec 'window.removeControls([wwidgl%s])' % count
+		exec 'window.removeControl(wwidgl%s)' % count
 		count += 1
-
-sett = []
-
-if qual == 'true':
-	sett.append(('Wireless Quality: ','funcWifiLinkQ()'))
-if rssi == 'true':
-	sett.append(('Wireless RSSI: ','funcWifiRSSI()'))
-if noise == 'true':
-	sett.append(('Wireless Noise: ','funcWifiNoise()'))
-if cputemp == 'true':
-	sett.append(('CPU Temp: ','funcCpuTemp()'))
-if gputemp == 'true':
-	sett.append(('GPU Temp: ','funcGpuTemp()'))
-
 
 if __name__ == "__main__":
 	Main()
