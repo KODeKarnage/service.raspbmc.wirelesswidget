@@ -67,9 +67,9 @@ def Main():
 
 	while not xbmc.abortRequested:
 		xbmc.sleep(1000*freq)
-		wwidgl1.setLabel('Quality: ' + str(funcWifiLinkQ))
-		wwidgl2.setLabel('RSSI: ' + str(funcWifiRSSI))
-		wwidgl3.setLabel('Noise: ' + str(funcWifiNoise))
+		wwidgl1.setLabel('Quality: ' + str(funcWifiLinkQ()))
+		wwidgl2.setLabel('RSSI: ' + str(funcWifiRSSI()))
+		wwidgl3.setLabel('Noise: ' + str(funcWifiNoise()))
 
 	window.removeControls([wwidgl1,wwidgl2,wwidgl3])
 
