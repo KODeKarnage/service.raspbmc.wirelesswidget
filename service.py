@@ -81,7 +81,7 @@ def Main():
 	window = xbmcgui.Window(10000)
 	count = 0
 	for x in sett:
-		exec 'wwidgl%s = xbmcgui.ControlLabel(xax, yax+%i, 350, 50, "Scanning")' % (count,count*25)
+		exec 'wwidgl%s = xbmcgui.ControlLabel(xax, yax+%i, 350, 50, "Scanning...")' % (count,count*25)
 		exec 'window.addControl(wwidgl%s)' % count
 		count += 1
 
