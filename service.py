@@ -93,7 +93,7 @@ def Main():
 			exec 'wwidgl%s.setLabel("%s" + str(%s))' % (count,x[0],x[1])
 			count += 1
 	count = 0 
-	for x in sett():
+	for x in sett:
 		exec 'window.removeControls([wwidgl%s])' % count
 		count += 1
 
